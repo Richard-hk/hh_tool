@@ -125,11 +125,11 @@ func buildV2rayAccessLogByLineStrs(lineVal string) (v2rayAccessLog model.V2rayAc
 	}
 	if v2rayAccessLog.Status == StatusRejected {
 		v2rayAccessLog.Reason = strings.Trim(strings.Split(lineVal, StatusRejected)[1], " ")
-		reg := regexp.MustCompile(`([0-9.]+)`)
+		reg := regexp.MustCompile(`([0-9.]+):([0-9]+)`)
 		reason := reg.FindAllString((v2rayAccessLog.Reason), -1)
 		if len(reason) > 0 {
-			v2rayAccessLog.RemoteAdr = reason[0]
-			v2rayAccessLog.RemoteAdrPort = reason[1]
+			v2rayAccessLog.RemoteAdr = strings.Split(reason[0], ":")[0]
+			v2rayAccessLog.RemoteAdrPort = strings.Split(reason[0], ":")[1]
 		}
 	}
 	return v2rayAccessLog
