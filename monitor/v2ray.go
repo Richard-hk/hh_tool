@@ -68,10 +68,10 @@ func readAccessLog(offset int64) {
 			if err != nil {
 				time.Sleep(time.Duration(viper.GetInt64("monitor.v2ray.accessLog.sleep")) * time.Second)
 			} else {
-				lastOffset, _ = f.Seek(0, io.SeekCurrent)
 				lineValStr := string(lineVal)
 				if checkLineVal(lineValStr) {
 					saveLineVal(lineValStr)
+					lastOffset, _ = f.Seek(0, io.SeekCurrent)
 				}
 			}
 		}
@@ -127,8 +127,10 @@ func buildV2rayAccessLogByLineStrs(lineVal string) (v2rayAccessLog model.V2rayAc
 		v2rayAccessLog.Reason = strings.Trim(strings.Split(lineVal, StatusRejected)[1], " ")
 		reg := regexp.MustCompile(`([0-9.]+)`)
 		reason := reg.FindAllString((v2rayAccessLog.Reason), -1)
-		v2rayAccessLog.RemoteAdr = reason[0]
-		v2rayAccessLog.RemoteAdrPort = reason[1]
+		if len(reason) > 0 {
+			v2rayAccessLog.RemoteAdr = reason[0]
+			v2rayAccessLog.RemoteAdrPort = reason[1]
+		}
 	}
 	return v2rayAccessLog
 }
