@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"hh_tool/model"
 	"hh_tool/service"
+	"hh_tool/tool"
 	"hh_tool/util"
 	"io"
 	"os"
@@ -50,9 +51,7 @@ func (p *V2rayProcessor) monitorAccessLog() {
 func readAccessLog(offset int64) {
 	accessLogPath := viper.GetString("monitor.v2ray.accessLog.path")
 	f, err := os.OpenFile(accessLogPath, os.O_RDONLY|os.O_CREATE, os.ModePerm)
-	if err != nil {
-		logrus.Error(accessLogPath + " is open failed")
-	}
+	util.HandleError(err, accessLogPath+" is open failed")
 	lastOffset, _ := f.Seek(offset, io.SeekStart)
 	line := bufio.NewReader(f)
 	loop := true
@@ -92,7 +91,8 @@ func getLastOffSet() int64 {
 }
 
 func saveLastOffSet(lastOffset int64) {
-	f, _ := os.OpenFile("tmp/v2ray_accessLog_lastoffset.id", os.O_WRONLY|os.O_CREATE, 0666)
+	f, err := os.OpenFile("tmp/v2ray_accessLog_lastoffset.id", os.O_WRONLY|os.O_CREATE, 0666)
+	util.HandleError(err, "saveLastOffSet failed")
 	defer f.Close()
 	write := bufio.NewWriter(f)
 	write.WriteString(strconv.FormatInt(lastOffset, 10))
@@ -109,6 +109,7 @@ func checkLineVal(lineVal string) bool {
 func saveLineVal(lineVal string) {
 	v2rayAccessLog := buildV2rayAccessLogByLineStrs(lineVal)
 	v2rayAccessLog.SaveV2rayAccessLog(v2rayAccessLog)
+	tool.SaveIpInfo(v2rayAccessLog.Ip)
 }
 
 func buildV2rayAccessLogByLineStrs(lineVal string) (v2rayAccessLog model.V2rayAccessLog) {
