@@ -1,4 +1,4 @@
-pname="hh_tool"
+pname="hh_tool_process"
 function start(){
     pid=`ps -ef |grep -v grep | grep ${pname} | awk '{print $2}'`
     if test $pid;then
