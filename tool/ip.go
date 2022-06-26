@@ -43,7 +43,7 @@ func SetRedisIpCount(ip string, val int64) {
 
 func UpdateIpInfoToMysql(ip string, count int64) {
 	v2rayAccessLogIpCount := BuildUpdateIpInfo(ip, count)
-	err := v2rayAccessLogIpCount.SaveV2rayAccessLogIpCount(v2rayAccessLogIpCount)
+	err := v2rayAccessLogIpCount.UpdateV2rayAccessLogIpCount(v2rayAccessLogIpCount)
 	util.HandleError(err, "SaveIpInfoToMysql failed")
 }
 
@@ -55,6 +55,7 @@ func SaveIpInfoToMysql(ip string, ipInfo string, count int64) {
 
 func BuildUpdateIpInfo(ip string, count int64) model.V2rayAccessLogIpCount {
 	var v2rayAccessLogIpCount model.V2rayAccessLogIpCount
+	v2rayAccessLogIpCount.Ip = ip
 	v2rayAccessLogIpCount.Count = count
 	v2rayAccessLogIpCount.UpdateTime = time.Now().Truncate(time.Second)
 	return v2rayAccessLogIpCount
