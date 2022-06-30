@@ -4,15 +4,16 @@ import (
 	"hh_tool/util"
 
 	"github.com/go-redis/redis"
+	"github.com/spf13/viper"
 )
 
 var rdb *redis.Client
 
 func InitRedisCon() *redis.Client {
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "",
-		DB:       0,
+		Addr:     viper.GetString("connect.redis.adr"),
+		Password: viper.GetString("connect.redis.pwd"),
+		DB:       viper.GetInt("connect.redis.db"),
 	})
 
 	_, err := rdb.Ping().Result()
