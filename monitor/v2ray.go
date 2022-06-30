@@ -103,6 +103,10 @@ func checkLineVal(lineVal string) bool {
 	if lineVal == "" {
 		return false
 	}
+	lineStrs := strings.Split(lineVal, " ")
+	if len(lineStrs) < 4 {
+		return false
+	}
 	return true
 }
 

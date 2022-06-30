@@ -24,7 +24,7 @@ func main() {
 
 func manual() {
 	var aid int
-	flag.IntVar(&aid, "aid", 1, "access_log id")
+	flag.IntVar(&aid, "aid", 0, "access_log id")
 	flag.Parse()
 	if aid > 0 {
 		test.RerunAccessLogHistoryRedisData(aid)
