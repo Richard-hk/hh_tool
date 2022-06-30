@@ -7,7 +7,7 @@ import (
 )
 
 func TestSetRedisVal(t *testing.T) {
-	rdb := database.SetRedisCon()
+	rdb := database.InitRedisCon()
 	val2, err := rdb.HGet("ip", "123").Result()
 	if err != nil {
 		fmt.Println(err)

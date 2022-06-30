@@ -16,7 +16,7 @@ func Run() {
 }
 
 func receiveSignal() {
-	signal.Notify(util.StopSignal, os.Interrupt, os.Kill, syscall.SIGINT, syscall.SIGTERM)
+	signal.Notify(util.StopSignal, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	<-util.StopSignal
 	close(util.StopSignal)
 	fmt.Println("receive stop signal after 3s will shut down ")

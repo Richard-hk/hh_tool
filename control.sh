@@ -2,7 +2,7 @@ pname="hh_tool_process"
 function start(){
     pid=`ps -ef |grep -v grep | grep ${pname} | awk '{print $2}'`
     if test $pid;then
-    echo "the programmer is already started the pid is $pid"
+    echo "the programmer has started the pid is $pid"
     else
     ./$pname >>nohup.out &
     echo "the programmer start successfully"
@@ -15,7 +15,7 @@ function stop(){
     kill $pid
     echo "the programmer stop successfully the pid is $pid"
     else
-    echo "the programmer is already stopped"
+    echo "the programmer has stopped"
     fi
 }
 
