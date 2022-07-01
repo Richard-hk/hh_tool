@@ -9,16 +9,18 @@ import (
 	"github.com/spf13/viper"
 )
 
-func SaveIpInfo(ip string) {
-	redisInfoCount, err := GetRedisIpCount(ip)
-	if err == nil {
-		count := redisInfoCount + 1
-		SetRedisIpCount(ip, count)
-		UpdateIpInfoToMysql(ip, count)
-	} else {
-		ipInfo := GetIpInfo(ip)
-		SetRedisIpCount(ip, 1)
-		SaveIpInfoToMysql(ip, ipInfo, 1)
+func SaveIpInfo(v2rayIpCountMap map[string]int) {
+	for ip, count := range v2rayIpCountMap {
+		redisInfoCount, err := GetRedisIpCount(ip)
+		if err == nil {
+			count := redisInfoCount + int64(count)
+			SetRedisIpCount(ip, count)
+			UpdateIpInfoToMysql(ip, count)
+		} else {
+			ipInfo := GetIpInfo(ip)
+			SetRedisIpCount(ip, 1)
+			SaveIpInfoToMysql(ip, ipInfo, 1)
+		}
 	}
 }
 
