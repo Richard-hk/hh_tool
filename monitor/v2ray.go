@@ -79,7 +79,7 @@ func readAccessLog(offset int64) {
 			if len(multLineValStr) > 50 || endUnix-startUnix > 2 {
 				startUnix = endUnix
 				saveMultiLineVal(multLineValStr)
-				multLineValStr = nil
+				multLineValStr = []string{}
 			}
 		}
 	}

@@ -18,8 +18,8 @@ func SaveIpInfo(v2rayIpCountMap map[string]int) {
 			UpdateIpInfoToMysql(ip, count)
 		} else {
 			ipInfo := GetIpInfo(ip)
-			SetRedisIpCount(ip, 1)
-			SaveIpInfoToMysql(ip, ipInfo, 1)
+			SetRedisIpCount(ip, int64(count))
+			SaveIpInfoToMysql(ip, ipInfo, int64(count))
 		}
 	}
 }

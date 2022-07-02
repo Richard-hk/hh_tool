@@ -19,7 +19,7 @@ func RerunAccessLogHistoryRedisData(MaxId int) {
 			monitor.BuildV2rayIpCountMap(v2rayIpCountMap, v)
 		}
 		tool.SaveIpInfo(v2rayIpCountMap)
-		v2rayIpCountMap = nil
+		v2rayIpCountMap = map[string]int{}
 	}
 	endTime := time.Now().Unix()
 	fmt.Println("RerunAccessLogHistoryRedisData finished, total spend time", endTime-startTime, " s")
