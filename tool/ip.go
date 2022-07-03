@@ -4,22 +4,19 @@ import (
 	"hh_tool/database"
 	"hh_tool/model"
 	"hh_tool/util"
-	"sync"
 	"time"
 
 	"github.com/spf13/viper"
 )
 
-func SaveIpInfo(v2rayIpCountMap map[string]int, mutex *sync.Mutex) {
+func SaveIpInfo(v2rayIpCountMap map[string]int) {
 	for ip, valCount := range v2rayIpCountMap {
-		mutex.Lock()
 		redisInfoCount, err := GetRedisIpCount(ip)
 		var count = int64(valCount)
 		if err == nil {
 			count += redisInfoCount
 		}
 		SetRedisIpCount(ip, count)
-		mutex.Unlock()
 		if err == nil {
 			UpdateIpInfoToMysql(ip, count)
 			continue

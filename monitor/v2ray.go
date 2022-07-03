@@ -11,7 +11,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -127,8 +126,7 @@ func saveMultiLineVal(multiLineVal []string) {
 		_ = v2rayAccessLog.SaveV2rayAccessLog(v2rayAccessLog)
 		BuildV2rayIpCountMap(v2rayIpCountMap, v2rayAccessLog)
 	}
-	var mutex sync.Mutex
-	tool.SaveIpInfo(v2rayIpCountMap, &mutex)
+	tool.SaveIpInfo(v2rayIpCountMap)
 }
 
 func BuildV2rayIpCountMap(v2rayIpCountMap map[string]int, v2rayAccessLog model.V2rayAccessLog) {
