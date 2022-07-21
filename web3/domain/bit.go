@@ -15,7 +15,8 @@ func GetDomainInfo() {
 	for {
 		bitDomains, _ := new(model.BitDomain).GetNormalBitDomain(util.BitDomain_UnKnown)
 		for _, bitDomain := range bitDomains {
-			res := tool.GetBitDomainPost(ipSite, bitDomain.Domain)
+			res := tool.GetBitDomainPost(ipSite, bitDomain.Domain+".bit")
+			fmt.Println(bitDomain, res)
 			if res.Err_No > 0 {
 				continue
 			}

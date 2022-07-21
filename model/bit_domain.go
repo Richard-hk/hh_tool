@@ -17,7 +17,7 @@ func (BitDomain) TableName() string {
 
 func (v *BitDomain) GetNormalBitDomain(status int) ([]BitDomain, error) {
 	var BitDomain []BitDomain
-	err := GetHhToolCon().Table(v.TableName()).Where("status = ?", status).Find(&BitDomain).Error
+	err := GetHhToolCon().Table(v.TableName()).Where("status = ?", status).Limit(100).Find(&BitDomain).Error
 	return BitDomain, err
 }
 
