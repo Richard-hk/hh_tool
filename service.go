@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"hh_tool/monitor"
+	"hh_tool/monitor/app/v2ray"
+	"hh_tool/monitor/web/bit_domain"
 	"hh_tool/util"
 	"os"
 	"os/signal"
@@ -30,13 +31,27 @@ func Monitor() {
 			MonitorApp(app)
 		}(app)
 	}
+	for _, web := range util.MonitorWeb {
+		go func(web string) {
+			MonitorWeb(web)
+		}(web)
+	}
 }
 
 // 监控app
 func MonitorApp(app string) {
 	switch app {
 	case util.V2RAY:
-		v2rayProcessor, _ := monitor.NewV2rayProcessor()
+		v2rayProcessor, _ := v2ray.NewV2rayProcessor()
 		v2rayProcessor.Monitor()
+	}
+}
+
+// 监控app
+func MonitorWeb(app string) {
+	switch app {
+	case util.BitDomain:
+		bit_domain, _ := bit_domain.NewBitDomainProcessor()
+		bit_domain.Monitor()
 	}
 }
