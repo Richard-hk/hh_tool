@@ -63,15 +63,17 @@ func (p BitDomainProcessor) MonitorSpecialBitDomain() {
 			continue
 		}
 		if bitDomain.Status == res.Data.Status {
-			continue
+			bitDomain.MonitorCount += 1
+			bitDomain.MonitorUpdateTime = time.Now().Truncate(time.Second)
+		} else {
+			bitDomain.Status = res.Data.Status
+			bitDomain.AccountPrice = res.Data.Account_Price
+			bitDomain.BaseAmount = res.Data.Base_Amount
+			bitDomain.UpdateTime = time.Now().Truncate(time.Second)
+			bitStatus := util.BitDomainMap[res.Data.Status]
+			sendText := "[.bit域名监测] " + bitUrl + "的状态是" + bitStatus
+			TelegramSendText(sendText)
 		}
-		bitDomain.Status = res.Data.Status
-		bitDomain.AccountPrice = res.Data.Account_Price
-		bitDomain.BaseAmount = res.Data.Base_Amount
-		bitDomain.UpdateTime = time.Now().Truncate(time.Second)
 		new(model.BitDomainSpecial).UpdateBitDomainSpecialInfo(bitDomain)
-		bitStatus := util.BitDomainMap[res.Data.Status]
-		sendText := "[.bit域名监测] " + bitUrl + "的状态是" + bitStatus
-		TelegramSendText(sendText)
 	}
 }
