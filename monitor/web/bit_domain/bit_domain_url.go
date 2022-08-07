@@ -1,21 +1,10 @@
-package tool
+package bit_domain
 
 import (
-	"bytes"
 	"encoding/json"
+	"hh_tool/tool/urlinfo"
 	"hh_tool/util"
-	"net/http"
-
-	"github.com/PuerkitoBio/goquery"
 )
-
-func GetSiteDoc(url string) *goquery.Document {
-	resp, err := http.Get(url)
-	util.HandleError(err, "GetSiteStr failed")
-	doc, err := goquery.NewDocumentFromReader(resp.Body)
-	util.HandleError(err, "GetSiteDoc failed")
-	return doc
-}
 
 type BitDomain struct {
 	Account          string `json:"account"`
@@ -40,11 +29,11 @@ type RespBitDomainData struct {
 	Base_Amount   string
 }
 
-func GetBitDomainPost(url string, account string) (res RespBitDomain) {
+func GetBitDomainRes(url string, account string) (res RespBitDomain) {
 	accountCharStr := []AccountCharStr{}
 	for _, val := range account {
 		charSetName := 1
-		if !IsSingleDigit(string(val)) {
+		if !util.IsSingleDigit(string(val)) {
 			charSetName = 2
 		}
 		tmpAccountChartStr := AccountCharStr{Char_Set_Name: charSetName, Char: string(val)}
@@ -52,9 +41,7 @@ func GetBitDomainPost(url string, account string) (res RespBitDomain) {
 	}
 	bitDomain := &BitDomain{Account: account, Address: "", Account_Char_Str: accountCharStr}
 	json_data, _ := json.Marshal(bitDomain)
-	resp, err := http.Post(url, "application/json",
-		bytes.NewBuffer(json_data))
-	util.HandleError(err, "GetSiteStr failed")
+	resp := urlinfo.GetUrlResp(url,json_data)
 	json.NewDecoder(resp.Body).Decode(&res)
 	return res
 }

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"hh_tool/model"
 	"hh_tool/monitor/app/v2ray"
-	"hh_tool/tool"
 	"time"
 )
 
@@ -17,7 +16,7 @@ func RerunAccessLogHistoryRedisData(MaxId int) {
 		for _, v := range v2rayAccessLogs {
 			v2ray.BuildV2rayIpCountMap(v2rayIpCountMap, v)
 		}
-		tool.SaveIpInfo(v2rayIpCountMap)
+		v2ray.SaveIpInfo(v2rayIpCountMap)
 		fmt.Println("go runtine finished i:", i)
 	}
 	endTime := time.Now().Unix()

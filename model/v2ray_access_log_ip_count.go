@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"hh_tool/config"
+	"time"
+)
 
 type V2rayAccessLogIpCount struct {
 	ID         int `gorm:"primary_key"`
@@ -15,9 +18,9 @@ func (*V2rayAccessLogIpCount) TableName() string {
 }
 
 func (v *V2rayAccessLogIpCount) SaveV2rayAccessLogIpCount(data V2rayAccessLogIpCount) error {
-	return GetHhToolCon().Table(v.TableName()).Save(&data).Error
+	return config.GetHhToolCon().Table(v.TableName()).Save(&data).Error
 }
 
 func (v *V2rayAccessLogIpCount) UpdateV2rayAccessLogIpCount(data V2rayAccessLogIpCount) error {
-	return GetHhToolCon().Table(v.TableName()).Where("ip", data.Ip).Updates(data).Error
+	return config.GetHhToolCon().Table(v.TableName()).Where("ip", data.Ip).Updates(data).Error
 }

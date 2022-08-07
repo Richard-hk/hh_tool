@@ -3,17 +3,12 @@ package main
 import (
 	"flag"
 	"hh_tool/config"
-	"hh_tool/database"
-	"hh_tool/model"
 	"hh_tool/test"
 	"os"
 )
 
 func init() {
-	config.InitViper()
-	config.InitLogrus()
-	model.InitMysqlCon()
-	database.InitRedisCon()
+	config.Init()
 }
 
 func main() {

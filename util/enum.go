@@ -32,3 +32,11 @@ var BitDomainMap = map[int]string{
 	BitDomain_Reserved:    "保护中",
 	BitDomain_UnExist:     "未锻造",
 }
+
+const TIME_LAYOUT_YMD_ = "2006/01/02"
+const TIME_LAYOUT_YMD = "20060102"
+const TIME_LAYOUT_YMD_HMS = "2006/01/02 15:04:05"
+const ONEDAY_TOTAL_SECOND = 86400
+
+const V2rayAccessLogStatusAccepted = "accepted"
+const V2rayAccessLogStatusRejected = "rejected"

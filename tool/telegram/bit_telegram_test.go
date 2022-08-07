@@ -1,4 +1,4 @@
-package bit_domain
+package telegram
 
 import "testing"
 

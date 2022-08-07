@@ -1,4 +1,4 @@
-package database
+package config
 
 import (
 	"hh_tool/util"
@@ -9,7 +9,11 @@ import (
 
 var rdb *redis.Client
 
-func InitRedisCon() *redis.Client {
+func InitRedisCon() {
+	rdb = SetRedisCon()
+}
+
+func SetRedisCon() (rdb *redis.Client) {
 	rdb = redis.NewClient(&redis.Options{
 		Addr:     viper.GetString("connect.redis.adr"),
 		Password: viper.GetString("connect.redis.pwd"),

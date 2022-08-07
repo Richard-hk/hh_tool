@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"hh_tool/model"
 	"hh_tool/service"
-	"hh_tool/tool"
 	"hh_tool/util"
 	"io"
 	"os"
@@ -126,7 +125,7 @@ func saveMultiLineVal(multiLineVal []string) {
 		_ = v2rayAccessLog.SaveV2rayAccessLog(v2rayAccessLog)
 		BuildV2rayIpCountMap(v2rayIpCountMap, v2rayAccessLog)
 	}
-	tool.SaveIpInfo(v2rayIpCountMap)
+	SaveIpInfo(v2rayIpCountMap)
 }
 
 func BuildV2rayIpCountMap(v2rayIpCountMap map[string]int, v2rayAccessLog model.V2rayAccessLog) {

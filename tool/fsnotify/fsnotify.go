@@ -1,4 +1,4 @@
-package help
+package fsnotify
 
 import (
 	"log"

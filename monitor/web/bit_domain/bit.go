@@ -2,12 +2,11 @@ package bit_domain
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
 	"hh_tool/model"
-	"hh_tool/tool"
+	"hh_tool/tool/telegram"
 	"hh_tool/util"
 	"time"
-
-	"github.com/spf13/viper"
 )
 
 type BitDomainProcessor struct {
@@ -18,11 +17,11 @@ func NewBitDomainProcessor() (*BitDomainProcessor, error) {
 }
 
 func GetDomainInfo() {
-	ipSite := viper.GetString("site.bit_domain.url")
+	ipSite := viper.GetString("url.bit_domain.url")
 	for {
 		bitDomains, _ := new(model.BitDomain).GetNormalBitDomain(util.BitDomain_UnKnown)
 		for _, bitDomain := range bitDomains {
-			res := tool.GetBitDomainPost(ipSite, bitDomain.Domain+".bit")
+			res := GetBitDomainRes(ipSite, bitDomain.Domain+".bit")
 			fmt.Println(bitDomain, res)
 			if res.Err_No > 0 {
 				continue
@@ -46,7 +45,7 @@ func (p BitDomainProcessor) Monitor() {
 
 func MonitorSpecialBitDomainWithTask() {
 	// 监控特别的域名
-	bitDomainSpecicalSpec := viper.GetString("site.bit_domain_special.cron")
+	bitDomainSpecicalSpec := viper.GetString("url.bit_domain_special.cron")
 	cmd := func() {
 		new(BitDomainProcessor).MonitorSpecialBitDomain()
 	}
@@ -54,11 +53,11 @@ func MonitorSpecialBitDomainWithTask() {
 }
 
 func (p BitDomainProcessor) MonitorSpecialBitDomain() {
-	ipSite := viper.GetString("site.bit_domain.url")
+	ipSite := viper.GetString("url.bit_domain.url")
 	bitDomains, _ := new(model.BitDomainSpecial).GetNotAvaliableBitDomainSpecial(util.BitDomain_Available_0, util.BitDomain_Available_1)
 	for _, bitDomain := range bitDomains {
 		bitUrl := bitDomain.Domain + ".bit"
-		res := tool.GetBitDomainPost(ipSite, bitUrl)
+		res := GetBitDomainRes(ipSite, bitUrl)
 		if res.Err_No > 0 {
 			continue
 		}
@@ -72,7 +71,7 @@ func (p BitDomainProcessor) MonitorSpecialBitDomain() {
 			bitDomain.UpdateTime = time.Now().Truncate(time.Second)
 			bitStatus := util.BitDomainMap[res.Data.Status]
 			sendText := "[.bit域名监测] " + bitUrl + "的状态是" + bitStatus
-			TelegramSendText(sendText)
+			telegram.TelegramSendText(sendText)
 		}
 		new(model.BitDomainSpecial).UpdateBitDomainSpecialInfo(bitDomain)
 	}

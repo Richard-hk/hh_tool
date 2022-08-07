@@ -1,8 +1,9 @@
-package tool
+package v2ray
 
 import (
-	"hh_tool/database"
+	"hh_tool/config"
 	"hh_tool/model"
+	"hh_tool/tool/urlinfo"
 	"hh_tool/util"
 	"time"
 
@@ -27,21 +28,21 @@ func SaveIpInfo(v2rayIpCountMap map[string]int) {
 }
 
 func GetIpInfo(ip string) string {
-	ipSite := viper.GetString("site.ip.url")
+	ipSite := viper.GetString("url.ip.url")
 	ipUrl := ipSite + "/" + ip + ".html"
-	ipSiteDoc := GetSiteDoc(ipUrl)
+	ipSiteDoc := urlinfo.GetUrlDoc(ipUrl)
 	return ipSiteDoc.Find("div#tab0_address").Text()
 }
 
 func GetRedisIpCount(ip string) (int64, error) {
-	rdb := database.GetRedisCon()
+	rdb := config.GetRedisCon()
 	res, err := rdb.HGet("ip", ip).Int64()
 	util.HandleError(err, "redis don't have ip "+ip)
 	return res, err
 }
 
 func SetRedisIpCount(ip string, val int64) {
-	rdb := database.GetRedisCon()
+	rdb := config.GetRedisCon()
 	rdb.HSet("ip", ip, val)
 }
 

@@ -1,4 +1,4 @@
-package database
+package config
 
 import (
 	"fmt"
@@ -8,6 +8,12 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
+
+var hhToolDb *gorm.DB
+
+func InitMysqlCon() {
+	setHhToolCon()
+}
 
 func SetMysqlCon(dbName string) *gorm.DB {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
@@ -22,4 +28,15 @@ func SetMysqlCon(dbName string) *gorm.DB {
 		logrus.Error("connect to mysql error dbname is ", dbName)
 	}
 	return db
+}
+
+func setHhToolCon() {
+	hhToolDb = SetMysqlCon("hh_tool")
+}
+
+func GetHhToolCon() *gorm.DB {
+	if hhToolDb == nil {
+		panic("connect hh_tool failed")
+	}
+	return hhToolDb
 }
