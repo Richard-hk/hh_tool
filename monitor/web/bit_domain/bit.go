@@ -2,11 +2,12 @@ package bit_domain
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
 	"hh_tool/model"
 	"hh_tool/tool/telegram"
 	"hh_tool/util"
 	"time"
+
+	"github.com/spf13/viper"
 )
 
 type BitDomainProcessor struct {
@@ -45,7 +46,7 @@ func (p BitDomainProcessor) Monitor() {
 
 func MonitorSpecialBitDomainWithTask() {
 	// 监控特别的域名
-	bitDomainSpecicalSpec := viper.GetString("url.bit_domain_special.cron")
+	bitDomainSpecicalSpec := viper.GetString("site.bit_domain_special.cron")
 	cmd := func() {
 		new(BitDomainProcessor).MonitorSpecialBitDomain()
 	}
