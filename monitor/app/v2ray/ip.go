@@ -1,6 +1,7 @@
 package v2ray
 
 import (
+	"fmt"
 	"hh_tool/config"
 	"hh_tool/model"
 	"hh_tool/tool/urlinfo"
@@ -28,8 +29,9 @@ func SaveIpInfo(v2rayIpCountMap map[string]int) {
 }
 
 func GetIpInfo(ip string) string {
-	ipSite := viper.GetString("url.ip.url")
+	ipSite := viper.GetString("site.ip.url")
 	ipUrl := ipSite + "/" + ip + ".html"
+	fmt.Println("ipUrl", ipUrl)
 	ipSiteDoc := urlinfo.GetUrlDoc(ipUrl)
 	return ipSiteDoc.Find("div#tab0_address").Text()
 }

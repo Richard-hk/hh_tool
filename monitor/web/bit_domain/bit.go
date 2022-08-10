@@ -18,7 +18,7 @@ func NewBitDomainProcessor() (*BitDomainProcessor, error) {
 }
 
 func GetDomainInfo() {
-	ipSite := viper.GetString("url.bit_domain.url")
+	ipSite := viper.GetString("site.bit_domain.url")
 	for {
 		bitDomains, _ := new(model.BitDomain).GetNormalBitDomain(util.BitDomain_UnKnown)
 		for _, bitDomain := range bitDomains {
@@ -54,7 +54,7 @@ func MonitorSpecialBitDomainWithTask() {
 }
 
 func (p BitDomainProcessor) MonitorSpecialBitDomain() {
-	ipSite := viper.GetString("url.bit_domain.url")
+	ipSite := viper.GetString("site.bit_domain.url")
 	bitDomains, _ := new(model.BitDomainSpecial).GetNotAvaliableBitDomainSpecial(util.BitDomain_Available_0, util.BitDomain_Available_1)
 	for _, bitDomain := range bitDomains {
 		bitUrl := bitDomain.Domain + ".bit"
