@@ -122,6 +122,9 @@ func saveMultiLineVal(multiLineVal []string) {
 	v2rayIpCountMap := make(map[string]int)
 	for _, lineVal := range multiLineVal {
 		v2rayAccessLog = buildV2rayAccessLogByLineStrs(lineVal)
+		if v2rayAccessLog.Dt == "" {
+			continue
+		}
 		_ = v2rayAccessLog.SaveV2rayAccessLog(v2rayAccessLog)
 		BuildV2rayIpCountMap(v2rayIpCountMap, v2rayAccessLog)
 	}
@@ -144,6 +147,9 @@ func buildV2rayAccessLogByLineStrs(lineVal string) (v2rayAccessLog model.V2rayAc
 	v2rayAccessLog.Port = strings.Split(lineStrs[2], ":")[1]
 	v2rayAccessLog.Status = lineStrs[3]
 	if v2rayAccessLog.Status == StatusAccepted {
+		if len(strings.Split(lineStrs[4], ":")) < 3 {
+			return model.V2rayAccessLog{}
+		}
 		v2rayAccessLog.Type = strings.Split(lineStrs[4], ":")[0]
 		v2rayAccessLog.RemoteAdr = strings.Split(lineStrs[4], ":")[1]
 		v2rayAccessLog.RemoteAdrPort = strings.Split(lineStrs[4], ":")[2]
