@@ -143,6 +143,9 @@ func buildV2rayAccessLogByLineStrs(lineVal string) (v2rayAccessLog model.V2rayAc
 	lineStrs := strings.Split(lineVal, " ")
 	v2rayAccessLog.Dt = strings.Replace(lineStrs[0], "/", "", -1)
 	v2rayAccessLog.Time = lineStrs[1]
+	if len(strings.Split(lineStrs[2], ":")) < 2 {
+		return model.V2rayAccessLog{}
+	}
 	v2rayAccessLog.Ip = strings.Split(lineStrs[2], ":")[0]
 	v2rayAccessLog.Port = strings.Split(lineStrs[2], ":")[1]
 	v2rayAccessLog.Status = lineStrs[3]
