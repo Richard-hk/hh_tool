@@ -69,7 +69,7 @@ func (p BitDomainProcessor) MonitorSpecialBitDomain() {
 			bitDomain.Status = res.Data.Status
 			bitDomain.AccountPrice = res.Data.Account_Price
 			bitDomain.BaseAmount = res.Data.Base_Amount
-			bitDomain.UpdateTime = time.Now().Truncate(time.Second)
+			bitDomain.MonitorUpdateTime = time.Now().Truncate(time.Second)
 			bitStatus := util.BitDomainMap[res.Data.Status]
 			sendText := "[.bit域名监测] " + bitUrl + "的状态是" + bitStatus
 			telegram.TelegramSendText(sendText)
