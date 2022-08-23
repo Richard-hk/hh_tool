@@ -11,7 +11,6 @@ type BitDomainSpecial struct {
 	Status            int
 	AccountPrice      string
 	BaseAmount        string
-	UpdateTime        time.Time
 	MonitorCount      int64
 	MonitorUpdateTime time.Time
 }
@@ -27,5 +26,5 @@ func (v *BitDomainSpecial) GetNotAvaliableBitDomainSpecial(status int, status1 i
 }
 
 func (v *BitDomainSpecial) UpdateBitDomainSpecialInfo(data BitDomainSpecial) error {
-	return config.GetHhToolCon().Table(v.TableName()).Select("status", "account_price", "base_amount", "update_time", "monitor_count", "monitor_update_time").Updates(data).Error
+	return config.GetHhToolCon().Table(v.TableName()).Select("status", "account_price", "base_amount", "monitor_count", "monitor_update_time").Updates(data).Error
 }
